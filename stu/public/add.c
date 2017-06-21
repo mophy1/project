@@ -18,7 +18,7 @@ int cgiMain()
 	int status = 0;
 	char sex[10] = "\0";
 	char birthday[30] = "\0";
-	char courseNo[30] = "\0";
+	char classNo[30] = "\0";
 	char ch;
   FILE * fd;
 
@@ -63,7 +63,7 @@ int cgiMain()
  	 return 1;
   }
 
-	status = cgiFormString("courseNo",  courseNo, 30);
+	status = cgiFormString("classNo",  classNo, 30);
   if (status != cgiFormSuccess)
   {
  	 fprintf(cgiOut, "get classNo error!\n");
@@ -87,7 +87,7 @@ int cgiMain()
 	}
 
 	//连接数据库
-	db = mysql_real_connect(db, "127.0.0.1", "root", "123456", "stu",  3306, NULL, 0);
+	db = mysql_real_connect(db, "127.0.0.1", "root", "1", "stu",  3306, NULL, 0);
 	if (db == NULL)
 	{
 		fprintf(cgiOut,"mysql_real_connect fail:%s\n", mysql_error(db));
@@ -112,7 +112,7 @@ int cgiMain()
 mysql_set_character_set(db, "utf8");
 /*
 fprintf(cgiOut, "name = %s, age = %s, stuId = %s stu_address = %s\n", name, age, stu_id,stu_address);*/
-	sprintf(sql, "insert into Information(studentNo,studentName,sex,birthday,courseNo) values('%s', '%s', '%s', '%s','%s')",stu_id, studentName,sex,birthday,courseNo);
+	sprintf(sql, "insert into Information(studentNo,studentName,sex,birthday,classNo) values('%s', '%s', '%s', '%s','%s')",stu_id, studentName,sex,birthday,classNo);
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 		fprintf(cgiOut, "%s\n", mysql_error(db));
@@ -120,10 +120,8 @@ fprintf(cgiOut, "name = %s, age = %s, stuId = %s stu_address = %s\n", name, age,
 		return -1;
 	}
 
-	fprintf(cgiOut, "<p style='margin-left:20px;'>add student ok!</p> ");
+	fprintf(cgiOut, "<p style='margin-left:20px;'>add student ok!</p>");
 	fprintf(cgiOut, "<input type='button' name='button1' id='button1' value='返回' onclick='history.go(-1)'  class='btn btn-default'>");
-	fprintf(cgiOut, "    <a href='../../add_score.html' class='btn btn-success'>提交点我添加成绩</a> </body></html> ");
-
 	mysql_close(db);
 	return 0;
 }

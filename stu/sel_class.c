@@ -17,12 +17,11 @@ int cgiMain()
 			</style>\
 			</head>");*/
 
+	fprintf(cgiOut, "<head><meta charset=\"utf-8\"><title>查询结果</title>\
+		    <link rel=\"stylesheet\" href=\"/stu/public/css/bootstrap.min.css\">\
+		</head>");
 
-			fprintf(cgiOut, "<head><meta charset=\"utf-8\"><title>查询结果</title>\
-						<link rel=\"stylesheet\" href=\"/stu/public/css/bootstrap.min.css\">\
-				");
-			fprintf(cgiOut,"<link href='/public/css/bootstrap.min.css' rel='stylesheet' >");
-	char studentName[32] = "\0";
+	char classNo[32] = "\0";
 	int status = 0;
 	char ch;
   FILE * fd;
@@ -40,15 +39,10 @@ int cgiMain()
 	}
   fclose(fd);
 
-
-	/*fprintf(cgiOut," <script src='https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js'></script>");
-
-	fprintf(cgiOut,"<script src='./public/js/bootstrap.min.js'></script></head>");
-*/
-	status = cgiFormString("studentName",  studentName, 32);
+	status = cgiFormString("classNo",  classNo, 32);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get studentName error!\n");
+		fprintf(cgiOut, "get classNo error!\n");
 		return 1;
 	}
 
@@ -56,13 +50,13 @@ int cgiMain()
 	MYSQL *db;
 	char sql[128] = "\0";
 
-	if (studentName[0] == '*')
+	if (classNo[0] == '*')
 	{
-		sprintf(sql, "select info.*,sc.score,c.courseName from Information as info left join Score as sc on sc.studentNo = info.studentNo left join Course as c on c.courseNo = info.courseNo");
+		sprintf(sql, "select * from Class");
 	}
 	else
 	{
-		sprintf(sql, "select info.*,sc.score,c.courseName from Information as info left join Score as sc on sc.studentNo = info.studentNo left join Course as c on c.courseNo = info.courseNo where info.studentName = '%s'", studentName);
+		sprintf(sql, "select * from  Class where classNo = '%s'", classNo);
 	}
 
 
@@ -101,7 +95,7 @@ int cgiMain()
 
 	fprintf(cgiOut, "<div class=\"container\"> <h1 class=\"text-center\">查询结果</h1>");
 
-	fprintf(cgiOut,"<table class='table'><tr >");
+	fprintf(cgiOut,"<table class=\"table table-striped table-bordered\"><tr>");
 	int i = 0;
 
 	unsigned int fields;
@@ -121,7 +115,7 @@ int cgiMain()
 
 	while ((row = mysql_fetch_row(res)) != NULL)
 	{
-		fprintf(cgiOut,"<tr class='active'>");
+		fprintf(cgiOut,"<tr>");
 		len = mysql_fetch_lengths(res);
 		for (i = 0; i < fields ; i++)
 		{
@@ -132,7 +126,7 @@ int cgiMain()
 	fprintf(cgiOut,"</table></div>");
 
 
-fprintf(cgiOut, "<input type='button' name='button1' id='button1' value='返回' onclick='history.go(-1)'  class='btn btn-default'> </body></html>");
+fprintf(cgiOut, "<input type='button' name='button1' id='button1' value='返回' onclick='history.go(-1)'  class='btn btn-default'>");
 	mysql_close(db);
 	return 0;
 }

@@ -88,7 +88,7 @@ int cgiMain()
 	}
 
 	//连接数据库
-	db = mysql_real_connect(db, "127.0.0.1", "root", "1", "stu",  3306, NULL, 0);
+	db = mysql_real_connect(db, "127.0.0.1", "root", "123456", "stu",  3306, NULL, 0);
 	if (db == NULL)
 	{
 		fprintf(cgiOut,"mysql_real_connect fail:%s\n", mysql_error(db));
@@ -97,7 +97,7 @@ int cgiMain()
 	}
 
 mysql_set_character_set(db, "utf8");
-	sprintf(sql, "update Information set studentName = '%s',sex= '%s',birthday='%s',classNo = '%d' where studentNo = '%s' ", studentName, sex, birthday,classNo,stu_id);
+	sprintf(sql, "update Information set studentName = '%s',sex= '%s',birthday='%s',classNo = '%s' where studentNo = '%s' ", studentName, sex, birthday,classNo,stu_id);
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
