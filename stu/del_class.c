@@ -60,7 +60,7 @@ int cgiMain()
 	}
 
 
-	sprintf(sql, "delete from Class where classNo = '%s'", classNo);
+	sprintf(sql, "UPDATA Class SET class_enable = not class_enable where classNo = '%s'", classNo);
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
